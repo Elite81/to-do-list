@@ -14,10 +14,16 @@ class Task(models.Model):
         ("in_progress", "In Progress"),
         ("compted", "Completed")
     ]
+    PRIORITY = [
+        ("low","Low"),
+        ("medium","Medium"),
+        ("high","High")
+    ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False )
     user= models.ForeignKey("User", on_delete=models.CASCADE, related_name="tasks")
     task= models.CharField(max_length=256, blank=True)
+    status =  models.CharField(max_length=64, choices= STATUS_CHOISES, default=STATUS_CHOISES[1][0] )
+    priority = models.CharField(max_length=64, choices= STATUS_CHOISES, default=PRIORITY[1][0] )
+    description = models.TextField(blank=True)
     date_added= models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(default=timezone.now)
-    status =  models.CharField(max_length=64, choices= STATUS_CHOISES, default=STATUS_CHOISES[1][0] )
-    description = models.TextField(blank=True)
