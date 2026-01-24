@@ -135,3 +135,4 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
+AUTH_USER_MODEL = 'tasks.User'
