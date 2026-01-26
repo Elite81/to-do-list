@@ -3,6 +3,7 @@ from .models import *
 
 
 class TaskForm(ModelForm):
+    '''Task form '''
     class Meta:
         model = Tasks
         fields = [
