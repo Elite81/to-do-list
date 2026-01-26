@@ -1,5 +1,6 @@
 from tasks.models import *
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 
 def save_new_task(task_form, user):
@@ -10,7 +11,7 @@ def save_new_task(task_form, user):
 
 
 def search_task(query):
-    task = Tasks.objects.filter(Q(title__icontain=query) | Q(description__icontains=query))
+    task = Tasks.objects.filter(Q(task__icontains=query) | Q(description__icontains=query))
     return task
 
 
