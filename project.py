@@ -15,9 +15,8 @@ def search_task(query):
     return task
 
 
-def save_edited_task(form, user):
+def save_edited_task(form):
     task = form.save(commit=False)
-    task.user = user
     task.save()
     return task
 

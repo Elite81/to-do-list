@@ -92,7 +92,7 @@ class LoginTest(TestCase):
         form = TaskForm(form_data, instance=task)
         self.assertTrue(form, form.errors)
         
-        edited_task = save_edited_task(form, user)
+        edited_task = save_edited_task(form)
         self.assertEqual(self.user, task.user)
         self.assertEqual(task.task, edited_task.task)
 

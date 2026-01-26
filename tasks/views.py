@@ -9,7 +9,7 @@ from django.contrib import messages
 
 def home(request):
     tasks = Tasks.objects.select_related('user').all()
-    return render(request, "tasks/home.html", {"taks":tasks})
+    return render(request, "tasks/home.html", {"tasks":tasks})
 
 
 
@@ -21,7 +21,7 @@ def add_task(request):
         user = request.user
         if task_from.is_valid():
             task = save_new_task(task_from, user)
-        messages.success(f'Your task:{task} is saved with success')
+        messages.success(request, f'Your task:{task} is saved with success')
         return redirect("home")
     form = TaskForm()
     return render(request, "tasks/add_task.html", {"form": form})
@@ -30,10 +30,12 @@ def add_task(request):
 
 @login_required
 def delete_task(request, pk):
-    if request.method == "POST":
-        user = user=request.user
-        task = delete_a_task(pk,user)
-        messages.success(f'Your task:{task} was deleted with success')
+    user = user=request.user
+    task_to_delete = get_object_or_404(Tasks, pk=pk, user=request.user)
+    task = delete_a_task(pk,user)
+
+    if request.user == task_to_delete.user:
+        messages.success(request, f'Your task:{task} was deleted with success')
         return redirect("home")
     
 
@@ -46,23 +48,23 @@ def edit_task(request, pk):
         if form.is_valid():
             user = request.user
             save_edited_task(form, user)
-            messages.success('Your task was edited with success')
+            messages.success(request, 'Your task was edited with success')
             return redirect("/")
     
     form = TaskForm(instance=task)
-    return render(request, "tasks/add_task.html", {"form": form})
+    return render(request, "tasks/edit_task.html", {"form": form, "task":task})
 
 
 def search(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q').strip()
     if query:
         result = search_task(query)
         if not result.exists():
             messages.error(request, f"No Task found for the search {query}")
     else:
         
-        messages.error('Your task was edited with success')
+        messages.error('Your query is empty')
         return render(request, 'tasks/home.html')
     
-    context = {'result':result, "query":query}
+    context = {'tasks':result, "query":query}
     return render(request, 'tasks/home.html', context)

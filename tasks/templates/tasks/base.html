@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <title>{% block title %}Home{% endblock %}</title>
 </head>
-<body>
+<body class="container" style="font-family: 'lato';">
+
+
 {% block header %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
@@ -26,16 +34,8 @@
         </li>
         
       </ul>
-
-      <ul>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Logout</a>
-        </li>
-
-        {% if user.is_authenticated %}
+        <ul class="navbar-nav list-unstyled ms-auto d-flex gap-2">
+          {% if user.is_authenticated %}
                 <li class="nav-item">
                     <form method="post" action="{% url 'account_logout' %}">
                         {% csrf_token %}
@@ -43,19 +43,35 @@
                     </form>
                 </li>
             {% else %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                <li class="nav-item me-md-2">
+                  
+                  <a class="btn btn-outline-primary w-100 w-md-auto mb-2 mb-md-0" href="{% url 'account_login' %}">
+                    Login
+                  </a>
                 </li>
                   <li class="nav-item">
-                  <a class="nav-link" href="{% url 'account_signup' %}">SignUp</a>
+                  <a class="btn btn-primary w-100 w-md-auto" href="{% url 'account_signup' %}">SignUp</a>
                 </li>
             {% endif %}
+        </ul>
       </ul>
     
     </div>
   </div>
 </nav>
 {% endblock%}
+
+  {% block search %}
+    <nav class="navbar bg-body-tertiary pb-5">
+  <div class="container-fluid">
+    <form class="d-flex w-100 w-md-auto" role="search" action="{% url 'search' %}">
+      <input class="form-control flex-grow-1 me-2" type="search" placeholder="Search" aria-label="Search" name="q"/>
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+  {% endblock %}
+
 
 
     {% block content %}
