@@ -1,0 +1,12 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Not Found
+{% endblock %}
+
+{% block content %}
+    <h1>Not Found</h1>
+    <p>Oops! The requested resource was not found on this server.</p>
+{% endblock %}
+
+<h5><a href="{% url 'home' %}">Return to the Home page</a></h5>

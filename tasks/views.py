@@ -1,11 +1,68 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from project import *
+from .forms import *
+from django.db.models import Q
+from django.contrib import messages 
 
 # Create your views here.
 
 def home(request):
+    tasks = Tasks.objects.select_related('user').all()
+    return render(request, "tasks/home.html", {"taks":tasks})
+
+
+
+@login_required
+def add_task(request):
+
     if request.method == "POST":
-        ...
+        task_from = TaskForm(request.POST)
+        user = request.user
+        if task_from.is_valid():
+            task = save_new_task(task_from, user)
+        messages.success(f'Your task:{task} is saved with success')
+        return redirect("home")
+    form = TaskForm()
+    return render(request, "tasks/add_task.html", {"form": form})
+
+
+
+@login_required
+def delete_task(request, pk):
+    if request.method == "POST":
+        user = user=request.user
+        task = delete_a_task(pk,user)
+        messages.success(f'Your task:{task} was deleted with success')
+        return redirect("home")
     
 
-    return render(request, "tasks/home.html")
+@login_required
+def edit_task(request, pk):
+    task = get_object_or_404(Tasks, pk=pk, user=request.user)
+    
+    if request.method == "POST":
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            user = request.user
+            save_edited_task(form, user)
+            messages.success('Your task was edited with success')
+            return redirect("/")
+    
+    form = TaskForm(instance=task)
+    return render(request, "tasks/add_task.html", {"form": form})
+
+
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        result = search_task(query)
+        if not result.exists():
+            messages.error(request, f"No Task found for the search {query}")
+    else:
+        
+        messages.error('Your task was edited with success')
+        return render(request, 'tasks/home.html')
+    
+    context = {'result':result, "query":query}
+    return render(request, 'tasks/home.html', context)
