@@ -68,7 +68,7 @@ def edit_task(request, pk):
     form = TaskForm(instance=task)
     return render(request, "tasks/edit_task.html", {"form": form, "task": task})
 
-
+@login_required
 def search(request):
     query = request.GET.get("q").strip()  # getting the query
     if query:
