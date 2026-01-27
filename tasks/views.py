@@ -12,9 +12,11 @@ def home(request):
     if request.user.is_authenticated:
     
         tasks = Tasks.objects.select_related("user").all().order_by("-priority", "-date_added")
+        
     else:
         messages.info(request, "Welcome to the Tasks App. Please log in to view or add new tasks.")
         return render(request, "tasks/home.html")
+    
     return render(request, "tasks/home.html", {"tasks": tasks})
 
 
@@ -40,13 +42,12 @@ def delete_task(request, pk):
     )  # getting the task from the database
     task = delete_a_task(pk, user)
 
-    if (
-        request.user == task_to_delete.user
-    ):  # insure the the user is the owner of the the task
-        messages.success(request, f"Your task:{task} was deleted with success")
+    if request.user == task_to_delete.user:
+      # make sure the the user is the owner of the the task
+        messages.success(request, f"Your task:{task_to_delete.task} was deleted with success")
         return redirect("home")
     else:
-        messages.success(request, f"You are not the auther of the task:{task}")
+        messages.success(request, f"You are not the auther of the task:{task.task}")
         return redirect("home")
 
 

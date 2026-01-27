@@ -11,6 +11,7 @@
   <h1 class="fw-bold">To Do List: </h1>
   </div>
   <hr>
+   {% if tasks %}
   <div class="table-responsive">
     <table class="table table-bordered table-striped table-hover align-middle">
     <thead class="text-center ">
@@ -37,6 +38,7 @@
       </th>    
     </thead>
     <tbody>
+     
       {% for task in tasks %}
       <tr>
         
@@ -55,6 +57,19 @@
         {% endfor %}
     </tbody>
   </table>
+  {% else %}
+  <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div>
+        <h2 class="fw-bold">You have no tasks recorded.</h2>
+        <h6 class="mt3">Click the button below to record a new task.</h6>
+        <div class="d-grid gap-2 m-5">
+            <button class="btn btn-primary" type="button">
+                <a class="text-decoration-none text-white fw-bold" href="{% url 'new_task' %}">Record a new Task</a>
+            </button>
+        </div>
+    </div>
+</div>
+  {% endif %}
   </div>
 
 </div>
