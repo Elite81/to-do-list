@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 import os
 
 
-load_dotenv() 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,7 +34,6 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 ALLOWED_HOSTS = ["tasks-7ugz.onrender.com", "localhost", "127.0.0.1"]
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,7 +48,7 @@ INSTALLED_APPS = [
     "tasks",
     "crispy_forms",
     "crispy_bootstrap5",
-    "silk"
+    "silk",
 ]
 
 MIDDLEWARE = [
@@ -66,13 +65,10 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    
     # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
+    "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by email
-    'allauth.account.auth_backends.AuthenticationBackend',
-    
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 ROOT_URLCONF = "ToDoList.urls"
@@ -95,7 +91,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "ToDoList.wsgi.application"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
 
 
 # Database
@@ -128,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 STORAGES = {
-    
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
@@ -152,8 +146,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-CRISPY_TEMPLATE_PACK = 'uni_form'
-AUTH_USER_MODEL = 'tasks.User'
+CRISPY_TEMPLATE_PACK = "uni_form"
+AUTH_USER_MODEL = "tasks.User"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"

@@ -3,9 +3,8 @@ from .models import *
 
 
 class TaskForm(ModelForm):
-    '''Task form '''
+    """Task form"""
+
     class Meta:
         model = Tasks
-        fields = [
-            'task', 'status', 'priority', 'description'
-        ]
+        fields = ["task", "status", "priority", "description"]

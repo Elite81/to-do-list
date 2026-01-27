@@ -10,12 +10,13 @@ from tasks.forms import *
 import random
 
 
-
 fake = Faker()
 User = get_user_model()
 
+
 class SignUpTest(TestCase):
-    '''Testcase for signingup a user'''
+    """Testcase for signingup a user"""
+
     def test_user_signUp(self):
         password = fake.password()
         response = self.client.post(
@@ -24,14 +25,14 @@ class SignUpTest(TestCase):
                 "username": fake.user_name(),
                 "email": fake.safe_email(),
                 "password1": password,
-                "password2": password
+                "password2": password,
             },
         )
         self.assertEqual(User.objects.count(), 1)
         user = User.objects.first()
         self.assertIsNotNone(user.id)
         self.assertTrue(user.is_active)
-        self.assertEqual(user.username, response.wsgi_request.POST.get('username'))
+        self.assertEqual(user.username, response.wsgi_request.POST.get("username"))
         self.assertEqual(response.status_code, 302)
 
 
@@ -40,10 +41,9 @@ class LoginTest(TestCase):
         self.username = fake.user_name()
         self.email = fake.safe_email()
         self.password = fake.password()
-        
+
         self.user = User.objects.create_user(
-            username=self.username,
-            password=self.password
+            username=self.username, password=self.password
         )
 
     def test_user_login(self):
@@ -51,7 +51,7 @@ class LoginTest(TestCase):
             reverse("account_login"),
             data={
                 "login": self.username,
-                "password":self.password,
+                "password": self.password,
             },
         )
 
@@ -61,10 +61,12 @@ class LoginTest(TestCase):
 
     def create_task(self):
         user = self.user
-        data={"task": fake.words(nb=5), 
-              "description":fake.sentence(nb_words=10),
-              "status":random.choice(Tasks.STATUS_CHOISES)[0],
-              "priority":random.choice(Tasks.PRIORITY)[0]}
+        data = {
+            "task": fake.words(nb=5),
+            "description": fake.sentence(nb_words=10),
+            "status": random.choice(Tasks.STATUS_CHOISES)[0],
+            "priority": random.choice(Tasks.PRIORITY)[0],
+        }
         task_form = TaskForm(data=data)
         self.assertTrue(task_form.is_valid(), task_form.errors)
         if task_form.is_valid():
@@ -76,22 +78,23 @@ class LoginTest(TestCase):
         self.assertEqual(Tasks.objects.count(), 1)
         self.assertEqual(self.user, task.user)
 
-# def search_task():
-#     ...
+    # def search_task():
+    #     ...
 
     def test_save_edited_task(self):
         user = self.user
         task = self.create_task()
         edited_task = " ".join(fake.words(nb=5))
-        form_data = {"task": edited_task,
-                     "description":task.description,
-                     "status":task.status,
-                     "priority":task.priority
-                    }
+        form_data = {
+            "task": edited_task,
+            "description": task.description,
+            "status": task.status,
+            "priority": task.priority,
+        }
         task.task = edited_task
         form = TaskForm(form_data, instance=task)
         self.assertTrue(form, form.errors)
-        
+
         edited_task = save_edited_task(form)
         self.assertEqual(self.user, task.user)
         self.assertEqual(task.task, edited_task.task)

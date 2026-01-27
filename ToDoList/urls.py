@@ -22,8 +22,8 @@ from django.urls import re_path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('accounts/', include('allauth.urls')),
-    path("", include("tasks.urls"))
+    path("accounts/", include("allauth.urls")),
+    path("", include("tasks.urls")),
 ]
 
-urlpatterns += [re_path(r'^silk', include('silk.urls', namespace='silk'))]
+urlpatterns += [re_path(r"^silk", include("silk.urls", namespace="silk"))]
