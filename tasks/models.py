@@ -20,7 +20,7 @@ class Tasks(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
-        "User", on_delete=models.CASCADE, related_name="tasks", unique=True
+        "User", on_delete=models.CASCADE, related_name="tasks"
     )
     task = models.CharField(max_length=256, blank=False, null=False)
     status = models.CharField(
@@ -33,6 +33,7 @@ class Tasks(models.Model):
 
     class Meta:
         ordering = ['-priority', '-date_added']
+        unique_together =["task", "user"]
 
     def __str__(self):
         return self.task

@@ -9,7 +9,12 @@ from django.contrib import messages
 
 
 def home(request):
-    tasks = Tasks.objects.select_related("user").all().order_by("-priority", "-date_added")
+    if request.user.is_authenticated:
+    
+        tasks = Tasks.objects.select_related("user").all().order_by("-priority", "-date_added")
+    else:
+        messages.info(request, "Welcome to the Tasks App. Please log in to view or add new tasks.")
+        return render(request, "tasks/home.html")
     return render(request, "tasks/home.html", {"tasks": tasks})
 
 
