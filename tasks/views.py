@@ -80,7 +80,7 @@ def search(request):
         return render(request, "tasks/home.html")
 
     context = {"tasks": result, "query": query}
-    return render(request, "tasks/home.html", context)
+    return render(request, "tasks/search.html", context)
 
 @login_required
 def view_taks(request, pk):

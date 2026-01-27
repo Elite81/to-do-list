@@ -1,0 +1,80 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content  %}
+  
+
+
+<div class="min-vh-100">
+  <div class="d-flex justify-content-center align-items-center p-4">
+  <h1 class="fw-bold">There are the the result for {{query}}: </h1>
+  </div>
+  <hr>
+   {% if tasks %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover align-middle">
+    <thead class="text-center ">
+      <th class="bg-secondary text-white">
+        Task
+      </th>
+      <th class="bg-secondary text-white">
+        Priority
+      </th>
+      <th class="bg-secondary text-white">
+        Status
+      </th>
+      <th class="bg-secondary text-white">
+        Description
+      </th>
+      <th class="bg-secondary text-white">
+        Date Recordered
+      </th> 
+      <th class="bg-secondary text-white">
+        Edit
+      </th>  
+      <th class="bg-secondary text-white">
+        Delete
+      </th>    
+    </thead>
+    <tbody>
+     
+      {% for task in tasks %}
+      <tr>
+        
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.task}}</a></td>
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.get_priority_display}}</a></td>
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.get_status_display}}</a></td>
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.description|slice:":40"}} ...</a></td>
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.date_added}}</a></td>
+         <td>
+          <button class="btn btn-outline-info "><a href="{% url 'edit_task' task.id %}">Edit</a></button>
+         </td>
+         <td>
+          <button class="btn btn-danger"><a href="{% url 'delete_task' task.id %}" class="text-white">Delete</a></button>
+         </td>
+      </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div>
+        <h2 class="fw-bold">Sorry, You have no tasks recorded with: "{{query}}".</h2>
+        <h6 class="mt3">Click the button below to record a new task with {{query}}.</h6>
+        <div class="d-grid gap-2 m-5">
+            <button class="btn btn-primary" type="button">
+                <a class="text-decoration-none text-white fw-bold" href="{% url 'new_task' %}">Record a new Task</a>
+            </button>
+        </div>
+    </div>
+</div>
+  {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
