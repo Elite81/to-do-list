@@ -8,3 +8,6 @@ Faker
 whitenoise
 gunicorn
 python-dotenv
+submit50
+check50
+style50
