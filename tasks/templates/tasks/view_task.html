@@ -1,0 +1,50 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %} task {% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center p-4">
+  <h1 class="fw-bold">My Task: </h1>
+  </div>
+
+<table class="table table-boardered table-striped align-middle table-responsive">
+    <tbody>
+        <tr>
+            <th class="bg-secondary text-white">Task</th>
+            <td>{{task.task}}</td>
+        </tr>
+
+         <tr>
+            <th class="bg-secondary text-white">Priority</th>
+            <td>{{task.get_priority_display}}</td>
+        </tr>
+
+        <tr>
+            <th class="bg-secondary text-white">Status</th>
+            <td>{{task.get_status_display}}</td>
+        </tr>
+
+        <tr>
+            <th class="bg-secondary text-white">Status</th>
+            <td>{{task.description}}</td>
+        </tr>
+
+         <tr>
+            <th class="bg-secondary text-white">Status</th>
+            <td>{{task.date_added}}</td>
+        </tr>
+    </tbody>
+</table>
+<div class="d-flex justify-content-between mt-3">
+    <a href="{% url 'edit_task' task.id %}" class="btn btn-outline-info">Edit</a>
+    <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">Delete</a>
+</div>
+
+
+<div class="d-grid gap-2">
+  <button class="btn btn-primary m-5" type="button"><a class="text-decoration-none text-white fw-bold " href="/">Return Home</a></button>
+</div>
+
+{% endblock %}
+

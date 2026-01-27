@@ -60,7 +60,7 @@ def edit_task(request, pk):
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():  # validating the form
             user = request.user
-            save_edited_task(form, user)
+            save_edited_task(form)
             messages.success(request, "Your task was edited with success")
             return redirect("/")
 
@@ -80,3 +80,8 @@ def search(request):
 
     context = {"tasks": result, "query": query}
     return render(request, "tasks/home.html", context)
+
+@login_required
+def view_taks(request, pk):
+    task = get_object_or_404(Tasks, user=request.user, pk=pk)
+    return render(request, "tasks/view_task.html", {"task":task})

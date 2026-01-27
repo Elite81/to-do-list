@@ -11,7 +11,7 @@
   <h1 class="fw-bold">To Do List: </h1>
   </div>
   <hr>
-  <div class="table-resonsive">
+  <div class="table-responsive">
     <table class="table table-bordered table-striped table-hover align-middle">
     <thead class="text-center ">
       <th class="bg-secondary text-white">
@@ -39,11 +39,12 @@
     <tbody>
       {% for task in tasks %}
       <tr>
-        <td>{{task.task}}</td>
-         <td>{{task.priority}}</td>
-         <td>{{task.status}}</td>
-         <td>{{task.description|slice:":40"}} ...</td>
-         <td>{{task.date_added}}</td>
+        
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.task}}</a></td>
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.get_priority_display}}</a></td>
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.get_status_display}}</a></td>
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.description|slice:":40"}} ...</a></td>
+         <td><a class="text-decoration-none text-dark" href="{% url 'view_task' task.id %}">{{task.date_added}}</a></td>
          <td>
           <button class="btn btn-outline-info "><a href="{% url 'edit_task' task.id %}">Edit</a></button>
          </td>
