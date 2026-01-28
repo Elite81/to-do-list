@@ -10,4 +10,6 @@ gunicorn
 python-dotenv
 submit50
 check50
+psycopg2-binary
+dj-database-url
 style50

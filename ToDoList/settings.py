@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 import os
 
 
@@ -25,6 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+POSTGRESQL_DATABASE = os.getenv("POSTGRESQL_DATABASE")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
@@ -96,12 +99,25 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
+
+if POSTGRESQL_DATABASE:
+    
+    DATABASES = {
+        "default":dj_database_url.parse(
+            POSTGRESQL_DATABASE,
+            conn_max_age=600,
+            ssl_require=True,
+            conn_health_checks=True,
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+
 
 
 # Password validation
