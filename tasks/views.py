@@ -82,7 +82,8 @@ def edit_task(request, pk):
 def search(request):
     query = request.GET.get("q").strip()  # getting the query
     if query:
-        result = search_task(query)
+        user = request.user
+        result = search_task(query, user)
         if not result.exists():  # if search does not return a result
             messages.error(request, f"No Task found for the search {query}")
     else:
