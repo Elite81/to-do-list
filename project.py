@@ -11,10 +11,11 @@ def save_new_task(task_form, user):
     return task
 
 
-def search_task(query):
+def search_task(query, user):
     # search for the query on the database
     task = Tasks.objects.filter(
-        Q(task__icontains=query) | Q(description__icontains=query)
+        Q(task__icontains=query) | Q(description__icontains=query),
+        user=user
     )
     return task
 

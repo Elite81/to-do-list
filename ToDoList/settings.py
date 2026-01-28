@@ -30,8 +30,8 @@ POSTGRESQL_DATABASE = os.getenv("POSTGRESQL_DATABASE")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
-# DEBUG = True
+# DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
+DEBUG = True
 
 
 ALLOWED_HOSTS = ["tasks-7ugz.onrender.com", "localhost", "127.0.0.1"]
