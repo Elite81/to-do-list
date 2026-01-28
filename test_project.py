@@ -37,6 +37,8 @@ class SignUpTest(TestCase):
 
 
 class LoginTest(TestCase):
+
+    # Set up a user
     def setUp(self):
         self.username = fake.user_name()
         self.email = fake.safe_email()
@@ -46,6 +48,7 @@ class LoginTest(TestCase):
             username=self.username, password=self.password
         )
 
+    # login a user
     def test_user_login(self):
         response = self.client.post(
             reverse("account_login"),
@@ -59,6 +62,7 @@ class LoginTest(TestCase):
         self.assertTrue(response.wsgi_request.user.is_authenticated)
         self.assertEqual(response.wsgi_request.user.username, self.username)
 
+    # Create a task
     def create_task(self):
         user = self.user
         data = {
@@ -73,6 +77,7 @@ class LoginTest(TestCase):
             task = save_new_task(task_form, user)
             return task
 
+    # Testcase to create a new new task
     def test_save_new_task(self):
         task = self.create_task()
         self.assertEqual(Tasks.objects.count(), 1)
@@ -81,6 +86,7 @@ class LoginTest(TestCase):
     # def search_task():
     #     ...
 
+    # Testcase to edit a task
     def test_save_edited_task(self):
         user = self.user
         task = self.create_task()
@@ -99,6 +105,7 @@ class LoginTest(TestCase):
         self.assertEqual(self.user, task.user)
         self.assertEqual(task.task, edited_task.task)
 
+    # Testcase to delete a task
     def test_delete_a_task(self):
         user = self.user
         task = self.create_task()
@@ -106,6 +113,7 @@ class LoginTest(TestCase):
         delete_a_task(task_pk, user)
         self.assertEqual(Tasks.objects.count(), 0)
 
+    # Testcase to search by keyword
     def test_search(self):
         query = fake.words(nb=1)
         result = search_task(query)

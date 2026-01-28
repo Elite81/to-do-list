@@ -19,9 +19,7 @@ class Tasks(models.Model):
     PRIORITY = [("1", "Low"), ("2", "Medium"), ("3", "High")]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(
-        "User", on_delete=models.CASCADE, related_name="tasks"
-    )
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="tasks")
     task = models.CharField(max_length=256, blank=False, null=False)
     status = models.CharField(
         max_length=64, choices=STATUS_CHOISES, default=STATUS_CHOISES[1][0]
@@ -32,8 +30,8 @@ class Tasks(models.Model):
     date_updated = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        ordering = ['-priority', '-date_added']
-        unique_together =["task", "user"]
+        ordering = ["-priority", "-date_added"]
+        unique_together = ["task", "user"]
 
     def __str__(self):
         return self.task

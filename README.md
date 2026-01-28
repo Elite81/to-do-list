@@ -3,10 +3,8 @@
 
 A simple web-based **ToDo List application** built with **Django** and **Bootstrap**, allowing authenticated users to manage their tasks efficiently. Users can **create, read, update, delete (CRUD)**, and **search** their tasks.
 
----
-## Demo
-#### Live Demo:   <https://tasks-7ugz.onrender.com/>
-#### Video Demo:  <URL HERE>
+
+
 
 
 ## Description:

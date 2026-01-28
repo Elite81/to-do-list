@@ -1,13 +1,13 @@
 django
-django-filter
-django-silk
-django-crispy-forms
-django-allauth
+django - filter
+django - silk
+django - crispy - forms
+django - allauth
 crispy_bootstrap5
 Faker
 whitenoise
 gunicorn
-python-dotenv
+python - dotenv
 submit50
 check50
 style50

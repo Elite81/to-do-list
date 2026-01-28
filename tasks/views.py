@@ -10,13 +10,19 @@ from django.contrib import messages
 
 def home(request):
     if request.user.is_authenticated:
-    
-        tasks = Tasks.objects.select_related("user").all().order_by("-priority", "-date_added")
-        
+
+        tasks = (
+            Tasks.objects.select_related("user")
+            .all()
+            .order_by("-priority", "-date_added")
+        )
+
     else:
-        messages.info(request, "Welcome to the Tasks App. Please log in to view or add new tasks.")
+        messages.info(
+            request, "Welcome to the Tasks App. Please log in to view or add new tasks."
+        )
         return render(request, "tasks/home.html")
-    
+
     return render(request, "tasks/home.html", {"tasks": tasks})
 
 
@@ -43,8 +49,10 @@ def delete_task(request, pk):
     task = delete_a_task(pk, user)
 
     if request.user == task_to_delete.user:
-      # make sure the the user is the owner of the the task
-        messages.success(request, f"Your task:{task_to_delete.task} was deleted with success")
+        # make sure the the user is the owner of the the task
+        messages.success(
+            request, f"Your task:{task_to_delete.task} was deleted with success"
+        )
         return redirect("home")
     else:
         messages.success(request, f"You are not the auther of the task:{task.task}")
@@ -68,6 +76,7 @@ def edit_task(request, pk):
     form = TaskForm(instance=task)
     return render(request, "tasks/edit_task.html", {"form": form, "task": task})
 
+
 @login_required
 def search(request):
     query = request.GET.get("q").strip()  # getting the query
@@ -82,7 +91,8 @@ def search(request):
     context = {"tasks": result, "query": query}
     return render(request, "tasks/search.html", context)
 
+
 @login_required
 def view_taks(request, pk):
     task = get_object_or_404(Tasks, user=request.user, pk=pk)
-    return render(request, "tasks/view_task.html", {"task":task})
+    return render(request, "tasks/view_task.html", {"task": task})
