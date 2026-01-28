@@ -10,12 +10,13 @@ from django.contrib import messages
 
 def home(request):
     if request.user.is_authenticated:
-
         tasks = (
-            Tasks.objects.select_related("user")
-            .all()
+            Tasks.objects
+            .select_related("user")
+            .filter(user=request.user)
             .order_by("-priority", "-date_added")
         )
+
 
     else:
         messages.info(
