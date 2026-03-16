@@ -8,4 +8,5 @@ urlpatterns = [
     path("edit_task/<uuid:pk>", edit_task, name="edit_task"),
     path("search/", search, name="search"),
     path("view_task/<uuid:pk>", view_taks, name="view_task"),
+    path('sentry-debug/', trigger_error),
 ]

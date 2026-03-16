@@ -98,3 +98,7 @@ def search(request):
 def view_taks(request, pk):
     task = get_object_or_404(Tasks, user=request.user, pk=pk)
     return render(request, "tasks/view_task.html", {"task": task})
+
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
