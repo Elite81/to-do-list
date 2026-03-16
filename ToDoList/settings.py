@@ -195,3 +195,10 @@ sentry_sdk.init(
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     send_default_pii=True,
 )
+
+
+# Export database metrics (tracks connection pool and query counts)
+PROMETHEUS_EXPORT_MIGRATIONS = True
+
+# # If you use Redis for caching (recommended for the Auction/Bidding part of your work)
+# PROMETHEUS_METRIC_NAMESPACE = 'django_todo'
