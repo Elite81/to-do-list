@@ -13,9 +13,19 @@ def save_new_task(task_form, user):
 
 def search_task(query, user):
     # search for the query on the database
-    tasks = Tasks.objects.filter(
-        Q(task__icontains=query) | Q(description__icontains=query),
-        user=user).select_related('user') # Join the user table in ONE query instead of many
+    # tasks = Tasks.objects.filter(user=user).select_related('user').only(
+    #                 'task', 'description', 'priority', 'date_added', 'user__username'
+    #             )# Join the user table in ONE query instead of many
+
+    
+    tasks = Tasks.objects.filter(user=user).select_related('user').only(
+        'task', 
+        'status', 
+        'priority', 
+        'description', 
+        'date_added',
+        'user__username' # Only fetch the username, not the password hash!
+    ).order_by('-priority', '-date_added')
     return tasks
 
 

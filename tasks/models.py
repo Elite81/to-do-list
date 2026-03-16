@@ -32,6 +32,9 @@ class Tasks(models.Model):
     class Meta:
         ordering = ["-priority", "-date_added"]
         unique_together = ["task", "user"]
+        indexes = [
+            models.Index(fields=['user', '-priority', '-date_added']),
+        ]
 
     def __str__(self):
         return self.task

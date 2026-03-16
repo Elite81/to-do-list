@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "silk",
-    'django_prometheus'
+    'django_prometheus',
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -69,7 +70,14 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "silk.middleware.SilkyMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django_prometheus.middleware.PrometheusAfterMiddleware',
+]
+
+INTERNAL_IPS = [
+    
+    "127.0.0.1",
+    
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -83,6 +91,7 @@ ROOT_URLCONF = "ToDoList.urls"
 
 TEMPLATES = [
     {
+        
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [],
         "APP_DIRS": True,
