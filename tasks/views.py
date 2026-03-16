@@ -5,18 +5,28 @@ from .forms import *
 from django.db.models import Q
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.middleware.csrf import get_token
 
-# Create your views here.
 
 
 def home(request):
+    
+    get_token(request) 
     if request.user.is_authenticated:
-        tasks = (
+
+       # 2. Optimized Queryset: Eager loading + Field Projection
+        tasks_list = (
             Tasks.objects
             .select_related("user")
             .filter(user=request.user)
+            .only('task', 'status', 'priority', 'description', 'date_added', 'user__username')
             .order_by("-priority", "-date_added")
         )
+
+        # 3. Pagination Logic (10 tasks per page)
+        paginator = Paginator(tasks_list, 10) 
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
 
 
     else:
@@ -25,7 +35,7 @@ def home(request):
         )
         return render(request, "tasks/home.html")
 
-    return render(request, "tasks/home.html", {"tasks": tasks})
+    return render(request, "tasks/home.html", {"tasks": tasks_list, 'page_obj': page_obj})
 
 
 @login_required

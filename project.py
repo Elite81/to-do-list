@@ -12,12 +12,7 @@ def save_new_task(task_form, user):
 
 
 def search_task(query, user):
-    # search for the query on the database
-    # tasks = Tasks.objects.filter(user=user).select_related('user').only(
-    #                 'task', 'description', 'priority', 'date_added', 'user__username'
-    #             )# Join the user table in ONE query instead of many
-
-    
+   
     tasks = Tasks.objects.filter(user=user).select_related('user').only(
         'task', 
         'status', 
