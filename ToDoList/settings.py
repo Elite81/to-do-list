@@ -14,6 +14,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 
 load_dotenv()
@@ -168,3 +170,25 @@ AUTH_USER_MODEL = "tasks.User"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+
+# sentry_sdk.init(
+#     dsn="https://your-public-key@o0.ingest.sentry.io/0",  # Replace with your actual DSN
+#     integrations=[DjangoIntegration()],
+    
+#     # Set traces_sample_rate to 1.0 to capture 100% of transactions.
+#     # This is how you get the "Performance Metrics" (how long it takes to load your TODOs).
+#     traces_sample_rate=1.0,
+    
+#     # If you use Django's auth system, this sends the user's ID to Sentry.
+#     # This helps you say: "Only 2 users were affected by this specific bug."
+#     send_default_pii=True,
+# )
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN"),
+    # Add data like request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+)
