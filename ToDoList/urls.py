@@ -29,7 +29,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("", include("tasks.urls")),
-    path('sentry-debug/', trigger_error),
 ]
 
 urlpatterns += [re_path(r"^silk", include("silk.urls", namespace="silk"))]
