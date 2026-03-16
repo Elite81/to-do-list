@@ -27,6 +27,7 @@ from django.urls import path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
+    path('prometheus/', include('django_prometheus.urls')),
     path("", include("tasks.urls")),
 ]
 

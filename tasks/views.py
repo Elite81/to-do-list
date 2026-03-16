@@ -82,6 +82,11 @@ def edit_task(request, pk):
 @login_required
 def search(request):
     query = request.GET.get("q").strip()  # getting the query
+    # Show 10 tasks per page
+    paginator = Paginator(query, 10) 
+    
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
     if query:
         user = request.user
@@ -92,7 +97,7 @@ def search(request):
         messages.error("Your query is empty")
         return render(request, "tasks/home.html")
 
-    context = {"tasks": result, "query": query}
+    context = {"tasks": result, "query": query, 'page_obj': page_obj}
     return render(request, "tasks/search.html", context)
 
 
