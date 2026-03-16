@@ -14,3 +14,4 @@ psycopg2-binary
 dj-database-url
 style50
 sentry-sdk
+django-prometheus

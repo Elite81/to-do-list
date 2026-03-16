@@ -13,11 +13,10 @@ def save_new_task(task_form, user):
 
 def search_task(query, user):
     # search for the query on the database
-    task = Tasks.objects.filter(
+    tasks = Tasks.objects.filter(
         Q(task__icontains=query) | Q(description__icontains=query),
-        user=user
-    )
-    return task
+        user=user).select_related('user') # Join the user table in ONE query instead of many
+    return tasks
 
 
 def save_edited_task(form):

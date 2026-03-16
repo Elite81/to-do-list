@@ -4,6 +4,7 @@ from project import *
 from .forms import *
 from django.db.models import Q
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -81,6 +82,7 @@ def edit_task(request, pk):
 @login_required
 def search(request):
     query = request.GET.get("q").strip()  # getting the query
+    
     if query:
         user = request.user
         result = search_task(query, user)
