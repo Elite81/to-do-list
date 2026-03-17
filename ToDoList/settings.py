@@ -32,8 +32,8 @@ POSTGRESQL_DATABASE = os.getenv("POSTGRESQL_DATABASE")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
+# DEBUG = True
 
 
 ALLOWED_HOSTS = ["tasks-7ugz.onrender.com", "localhost", "127.0.0.1"]
@@ -53,9 +53,9 @@ INSTALLED_APPS = [
     "tasks",
     "crispy_forms",
     "crispy_bootstrap5",
-    "silk",
+    # "silk",
     'django_prometheus',
-    "debug_toolbar",
+    # "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -68,9 +68,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    "silk.middleware.SilkyMiddleware",
+    # "silk.middleware.SilkyMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 

@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import *
 from django.urls import include, path
-from debug_toolbar.toolbar import debug_toolbar_urls
+# from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path("", home, name="home"),
@@ -11,4 +11,5 @@ urlpatterns = [
     path("search/", search, name="search"),
     path("view_task/<uuid:pk>", view_taks, name="view_task"),
     path('sentry-debug/', trigger_error),
-]+ debug_toolbar_urls()
+]
+# + debug_toolbar_urls()
