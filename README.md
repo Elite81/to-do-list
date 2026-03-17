@@ -4,9 +4,6 @@
 A simple web-based **ToDo List application** built with **Django** and **Bootstrap**, allowing authenticated users to manage their tasks efficiently. Users can **create, read, update, delete (CRUD)**, and **search** their tasks.
 
 
-
-
-
 ## Description:
 
 ### Project Structure and File Description
@@ -125,6 +122,55 @@ This project includes two additional files in the root directory: project.py and
     - Use the search bar to find tasks by title or description.
 
 
+
+---
+
+## 🌐 Deployed Link
+👉 [https://tasks-7ugz.onrender.com](https://tasks-7ugz.onrender.com)  
+⚠️ Note: Hosted on Render free tier — app may take a few seconds to wake up on first load
+
+---
+
+## 📊 Performance Results
+
+Load tested using k6:
+
+- ✅ 0% failure rate (0 failures across ~5,700 requests)
+- ✅ p95 latency: ~1.9s (down from 7.17s)
+- ✅ ~23 requests/sec (~80,000 requests/hour)
+- ✅ 100 concurrent users handled successfully
+
+---
+
+## 🛠️ Key Improvements
+
+- Implemented CSRF-aware load testing (real browser simulation)
+- Fixed session handling under concurrency
+- Added request tagging for performance analysis
+- Simulated full user workflow (Create → Search)
+
+---
+
+## 📈 Observability
+
+Integrated Prometheus to monitor:
+
+- Memory usage (~71MB RSS stable)
+- Request throughput
+- Response sizes and latency
+
+---
+
+## 🧪 Load Testing
+
+k6 script simulates:
+
+1. Load form page
+2. Extract CSRF token
+3. Create task (POST)
+4. Search task
+
+---
 
 ## Conclusion
 
