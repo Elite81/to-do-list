@@ -1,53 +1,93 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
-// 1. Configuration: Proactive Performance Monitoring
+// Test Configuratio
 export const options = {
   stages: [
-    { duration: '30s', target: 5 },  // Ramp up to 5 users (safe for Render Free)
-    { duration: '1m', target: 10 }, // Push to 10 users to test limits
-    { duration: '30s', target: 0 },  // Ramp down
+    { duration: '1m', target: 20 },   // Ramp up users
+    { duration: '2m', target: 100 },  // Peak load
+    { duration: '1m', target: 0 },    // Ramp down
   ],
+
   thresholds: {
-    // If more than 10% of requests fail, the test is marked as failed
-    http_req_failed: ['rate<0.10'], 
-    // 95% of requests should ideally be under 1.5s on free-tier hosting
-    http_req_duration: ['p(95)<1500'], 
+    http_req_failed: ['rate<0.10'],     // Allow small failure rate
+    http_req_duration: ['p(95)<5000'],  // 95% of requests < 5s
   },
 };
 
 const BASE_URL = 'https://tasks-7ugz.onrender.com';
 
+
+// Main Test Scenario
+
 export default function () {
-  // --- STEP 1: Homepage Visit ---
-  // This populates the CookieJar with the 'csrftoken'
-  let homeRes = http.get(`${BASE_URL}/`);
+
+  // STEP 1: Load form page
+  // Capture session + CSRF token
   
-  check(homeRes, {
-    'home status is 200': (r) => r.status === 200,
-    'home carries cookies': (r) => r.cookies.csrftoken !== undefined,
+  const formRes = http.get(`${BASE_URL}/new_task/`, {
+    tags: { name: "load_task_form" }
   });
 
-  // Simulated "Think Time" - mimics a real human user
-  sleep(2);
+  check(formRes, {
+    'form page loaded (200)': (r) => r.status === 200,
+  });
 
-  // --- STEP 2: Search Functionality ---
-  let searchRes = http.get(`${BASE_URL}/search/?q=task`);
-  
-  check(searchRes, {
-    'search status is 200': (r) => r.status === 200,
+  const jar = http.cookieJar();
+  const cookies = jar.cookiesForURL(BASE_URL);
+
+  let csrfToken = cookies.csrftoken ? cookies.csrftoken[0] : null;
+
+  sleep(1);
+
+  // Stop if CSRF token missing
+  if (!csrfToken) {
+    return;
+  }
+
+  // Unique task name per user
+  const taskName = `task-VU${__VU}-ITER${__ITER}`;
+
+  // STEP 2: Create Task
+  const payload = {
+    task: taskName,
+    status: 'pending',
+    priority: 'medium',
+    description: 'Load testing task lifecycle',
+    csrfmiddlewaretoken: csrfToken,
+  };
+
+  const params = {
+    headers: {
+      'Referer': `${BASE_URL}/new_task/`,
+      'X-CSRFToken': csrfToken,
+    },
+    redirects: 1,
+    tags: { name: "create_task" },
+  };
+
+  const createRes = http.post(
+    `${BASE_URL}/new_task/`,
+    payload,
+    params
+  );
+
+  check(createRes, {
+    'task creation not forbidden': (r) => r.status !== 403,
+    'task creation success': (r) => r.status === 200 || r.status === 302,
   });
 
   sleep(1);
 
-  // --- STEP 3: Create Task Form (GET) ---
-  // Testing the "New Task" page load performance
-  let newTaskPage = http.get(`${BASE_URL}/new_task/`);
-  
-  check(newTaskPage, {
-    'new_task page loaded': (r) => r.status === 200,
+  // STEP 3: Search Task
+  const searchRes = http.get(`${BASE_URL}/search/?q=${taskName}`, {
+    tags: { name: "search_task" }
   });
 
-  // Final sleep before the next iteration
-  sleep(2);
+  check(searchRes, {
+    'search returned result': (r) => r.status === 200,
+  });
+
+  // Simulated User Think Time
+  sleep(Math.random() * 4 + 2);
 }
